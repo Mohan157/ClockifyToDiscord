@@ -10,16 +10,6 @@ DISCORD_APPLICATION_ID = ""
 RPC = Presence(DISCORD_APPLICATION_ID)
 RPC.connect()
 
-intents = discord.Intents.default()
-client = discord.Client(intents=intents)
-
-@client.event
-async def on_ready():
-    print(f"We have logged in as {client.user}")
-
-    # Set the status to idle
-    await client.change_presence(status=discord.Status.idle)
-
 def getAllActivities():
     url = f'https://api.clockify.me/api/v1/workspaces/{WORKSPACE_ID}/user/{USER_ID}/time-entries'
     headers = {
@@ -31,10 +21,11 @@ def getAllActivities():
         response = requests.get(url, headers=headers)
         if response.status_code == 200:
             return response.json()
-        
+            
         else:
             print(f"Error fetching time activities. Status code: {response.status_code}")
             return None
+            
     except Exception as e:
         print(f"An error occurred: {e}")
         return None
